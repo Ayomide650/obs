@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Obfuscator Pro - Advanced Code Protection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151932;
+            --bg-tertiary: #1e2139;
+            --accent-green: #00ff88;
+            --accent-blue: #00d4ff;
+            --accent-purple: #b794f6;
+            --text-primary: #e4e4e7;
+            --text-secondary: #a1a1aa;
+            --glass-bg: rgba(30, 33, 57, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #1a1f3a 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 2rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .shield-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .shield-icon svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 20px var(--accent-green));
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .preset-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .preset-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--glass-border);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .preset-btn.active {
+            border-color: var(--accent-green);
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 212, 255, 0.2));
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .editor-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .editor-wrapper {
+            position: relative;
+        }
+
+        .editor-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            padding: 0.4rem 0.8rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--accent-blue);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 400px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
+        }
+
+        .settings-panel {
+            margin-bottom: 1.5rem;
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .settings-header:hover {
+            background: var(--bg-secondary);
+        }
+
+        .settings-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .settings-section {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .settings-section h3 {
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .setting-item {
+            margin-bottom: 1.25rem;
+        }
+
+        .setting-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .setting-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .tooltip {
+            cursor: help;
+            color: var(--accent-purple);
+            font-size: 0.85rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 0.6rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-green);
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--accent-green);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-green), #00cc70);
+            color: var(--bg-primary);
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(0, 255, 136, 0.5);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+            border-color: var(--accent-blue);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            padding: 1.25rem;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+            width: 0%;
+            transition: width 0.3s ease;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200px 0; }
+            100% { background-position: 200px 0; }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--accent-green);
+        }
+
+        .notification.error {
+            border-left: 4px solid #ff4444;
+        }
+
+        .info-banner {
+            background: rgba(183, 148, 246, 0.1);
+            border: 1px solid var(--accent-purple);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1024px) {
+            .editor-container {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .preset-buttons {
+                flex-direction: column;
+            }
+
+            .preset-btn {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification">
+        <span id="notificationText"></span>
+    </div>
+
+    <script>
+        // Configuration State
+        let currentPreset = 'medium';
+        let settingsExpanded = true;
+
+        // Obfuscation Engine
+        class ObfuscatorEngine {
+            constructor(config) {
+                this.config = config;
+                this.stats = {
+                    originalSize: 0,
+                    obfuscatedSize: 0,
+                    processTime: 0,
+                    layersApplied: 0,
+                    transformations: {
+                        variables: 0,
+                        strings: 0,
+                        functions: 0
+                    }
+                };
+            }
+
+            obfuscate(code) {
+                const startTime = performance.now();
+                this.stats.originalSize = new Blob([code]).size;
+                
+                let result = code;
+                
+                try {
+                    // Layer 1: Identifier Renaming
+                    if (this.config.renameGlobals || this.config.renameProperties) {
+                        result = this.renameIdentifiers(result);
+                        this.stats.layersApplied++;
+                    }
+
+                    // Layer 2: String Encryption
+                    if (this.config.stringArray) {
+                        result = this.encryptStrings(result);
+                        this.stats.layersApplied++;
+                    }
+
+                    // Layer 3: Control Flow Flattening
+                    if (this.config.controlFlowFlattening) {
+                        result = this.flattenControlFlow(result);
+                        this.stats.layersApplied++;
+                    }
+
+                    // Layer 4: Dead Code Injection
+                    if (this.config.deadCodeInjection) {
+                        result = this.injectDeadCode(result);
+                        this.stats.layersApplied++;
+                    }
+
+                    // Layer 5: Anti-Debug Protection
+                    if (this.config.debugProtection) {
+                        result = this.addDebugProtection(result);
+                        this.stats.layersApplied++;
+                    }
+
+                    // Layer 6: Self-Defending Code
+                    if (this.config.selfDefending) {
+                        result = this.addSelfDefending(result);
+                        this.stats.layersApplied++;
+                    }
+
+                    // Layer 7: Domain Lock
+                    if (this.config.domainLock) {
+                        result = this.addDomainLock(result);
+                        this.stats.layersApplied++;
+                    }
+
+                    // Layer 8: Additional Transformations
+                    result = this.applyTransformations(result);
+
+                    // Compact code if enabled
+                    if (this.config.compact) {
+                        result = this.compactCode(result);
+                    }
+
+                    this.stats.obfuscatedSize = new Blob([result]).size;
+                    this.stats.processTime = performance.now() - startTime;
+
+                    return result;
+                } catch (error) {
+                    throw new Error(`Obfuscation failed: ${error.message}`);
+                }
+            }
+
+            renameIdentifiers(code) {
+                const identifiers = this.extractIdentifiers(code);
+                const prefix = this.config.identifierPrefix || '_0x';
+                let counter = 0;
+
+                identifiers.forEach(id => {
+                    if (this.isReservedName(id)) return;
+                    
+                    let newName;
+                    switch(this.config.identifierGenerator) {
+                        case 'hexadecimal':
+                            newName = prefix + counter.toString(16);
+                            break;
+                        case 'mangled':
+                            newName = this.generateMangled(counter);
+                            break;
+                        case 'mangled-shuffled':
+                            newName = this.generateMangledShuffled(counter);
+                            break;
+                        case 'dictionary':
+                            newName = this.generateDictionary(counter);
+                            break;
+                        default:
+                            newName = prefix + counter;
+                    }
+                    
+                    const regex = new RegExp(`\\b${id}\\b`, 'g');
+                    code = code.replace(regex, newName);
+                    counter++;
+                    this.stats.transformations.variables++;
+                });
+
+                return code;
+            }
+
+            extractIdentifiers(code) {
+                const identifiers = new Set();
+                const regex = /\b([a-zA-Z_$][a-zA-Z0-9_$]*)\b/g;
+                let match;
+                
+                while ((match = regex.exec(code)) !== null) {
+                    identifiers.add(match[1]);
+                }
+                
+                return Array.from(identifiers);
+            }
+
+            isReservedName(name) {
+                const reserved = [
+                    'const', 'let', 'var', 'function', 'return', 'if', 'else', 'for', 'while',
+                    'do', 'switch', 'case', 'break', 'continue', 'try', 'catch', 'throw',
+                    'console', 'window', 'document', 'Array', 'Object', 'String', 'Number',
+                    'Boolean', 'Math', 'Date', 'JSON', 'Promise', 'async', 'await', 'class',
+                    'extends', 'super', 'this', 'new', 'delete', 'typeof', 'instanceof',
+                    'void', 'null', 'undefined', 'true', 'false', 'NaN', 'Infinity'
+                ];
+                return reserved.includes(name);
+            }
+
+            generateMangled(index) {
+                const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                let result = '';
+                let num = index;
+                
+                do {
+                    result = chars[num % chars.length] + result;
+                    num = Math.floor(num / chars.length);
+                } while (num > 0);
+                
+                return '_' + result;
+            }
+
+            generateMangledShuffled(index) {
+                const chars = 'zcxvbnmasdfghjklqwertyuiopZXCVBNMASDFGHJKLQWERTYUIOP';
+                return this.generateMangled(index).split('').map(c => {
+                    const idx = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.indexOf(c);
+                    return idx >= 0 ? chars[idx] : c;
+                }).join('');
+            }
+
+            generateDictionary(index) {
+                const words = ['alpha', 'beta', 'gamma', 'delta', 'epsilon', 'zeta', 'eta', 'theta'];
+                return words[index % words.length] + (Math.floor(index / words.length) || '');
+            }
+
+            encryptStrings(code) {
+                const stringArray = [];
+                const stringMap = new Map();
+                
+                // Extract strings
+                const stringRegex = /(['"`])((?:(?!\1)[^\\]|\\.)*)(\1)/g;
+                let match;
+                let stringIndex = 0;
+                
+                while ((match = stringRegex.exec(code)) !== null) {
+                    const fullMatch = match[0];
+                    const content = match[2];
+                    
+                    if (Math.random() > (1 - this.config.stringThreshold)) {
+                        let encrypted = content;
+                        
+                        if (this.config.stringEncoding === 'base64') {
+                            encrypted = btoa(content);
+                        } else if (this.config.stringEncoding === 'rc4') {
+                            encrypted = this.rc4Encrypt(content, 'secretKey');
+                        }
+                        
+                        stringArray.push(encrypted);
+                        stringMap.set(fullMatch, stringIndex);
+                        stringIndex++;
+                        this.stats.transformations.strings++;
+                    }
+                }
+                
+                // Shuffle string array if enabled
+                if (this.config.shuffleStringArray) {
+                    this.shuffleArray(stringArray);
+                }
+                
+                // Rotate string array if enabled
+                let rotation = 0;
+                if (this.config.rotateStringArray) {
+                    rotation = Math.floor(Math.random() * stringArray.length);
+                    this.rotateArray(stringArray, rotation);
+                }
+                
+                // Generate string array variable
+                const arrayVar = '_0x' + Math.random().toString(36).substr(2, 6);
+                let stringArrayCode = `var ${arrayVar}=[${stringArray.map(s => `'${s}'`).join(',')}];`;
+                
+                // Add rotation code
+                if (this.config.rotateStringArray && rotation > 0) {
+                    stringArrayCode += `(function(_0x,_1){var _2=function(_3){while(--_3){_0x['push'](_0x['shift']());}};_2(++_1);}(${arrayVar},${rotation}));`;
+                }
+                
+                // Create decoder function
+                const decoderFunc = this.createDecoderFunction(arrayVar);
+                stringArrayCode += decoderFunc;
+                
+                // Replace strings in code
+                stringMap.forEach((index, original) => {
+                    const replacement = `_0xdec(${index})`;
+                    code = code.replace(original, replacement);
+                });
+                
+                return stringArrayCode + code;
+            }
+
+            rc4Encrypt(str, key) {
+                const s = [];
+                let j = 0;
+                let result = '';
+                
+                for (let i = 0; i < 256; i++) {
+                    s[i] = i;
+                }
+                
+                for (let i = 0; i < 256; i++) {
+                    j = (j + s[i] + key.charCodeAt(i % key.length)) % 256;
+                    [s[i], s[j]] = [s[j], s[i]];
+                }
+                
+                let i = 0;
+                j = 0;
+                
+                for (let k = 0; k < str.length; k++) {
+                    i = (i + 1) % 256;
+                    j = (j + s[i]) % 256;
+                    [s[i], s[j]] = [s[j], s[i]];
+                    result += String.fromCharCode(str.charCodeAt(k) ^ s[(s[i] + s[j]) % 256]);
+                }
+                
+                return btoa(result);
+            }
+
+            createDecoderFunction(arrayVar) {
+                let decoder = `var _0xdec=function(_0x){`;
+                
+                if (this.config.stringEncoding === 'base64') {
+                    decoder += `return atob(${arrayVar}[_0x]);`;
+                } else if (this.config.stringEncoding === 'rc4') {
+                    decoder += `var _1=atob(${arrayVar}[_0x]);var _2='';var _3='secretKey';var _4=[];var _5=0;for(var _6=0;_6<256;_6++){_4[_6]=_6;}for(var _6=0;_6<256;_6++){_5=(_5+_4[_6]+_3.charCodeAt(_6%_3.length))%256;var _7=_4[_6];_4[_6]=_4[_5];_4[_5]=_7;}var _8=0;_5=0;for(var _9=0;_9<_1.length;_9++){_8=(_8+1)%256;_5=(_5+_4[_8])%256;var _7=_4[_8];_4[_8]=_4[_5];_4[_5]=_7;_2+=String.fromCharCode(_1.charCodeAt(_9)^_4[(_4[_8]+_4[_5])%256]);}return _2;`;
+                } else {
+                    decoder += `return ${arrayVar}[_0x];`;
+                }
+                
+                decoder += `};`;
+                return decoder;
+            }
+
+            flattenControlFlow(code) {
+                // Simplified control flow flattening
+                if (Math.random() > (1 - this.config.flowThreshold)) {
+                    const functions = this.extractFunctions(code);
+                    
+                    functions.forEach(func => {
+                        const flattened = this.flattenFunction(func);
+                        code = code.replace(func, flattened);
+                    });
+                }
+                
+                return code;
+            }
+
+            extractFunctions(code) {
+                const functions = [];
+                const regex = /function\s+\w+\s*\([^)]*\)\s*\{[^}]*\}/g;
+                let match;
+                
+                while ((match = regex.exec(code)) !== null) {
+                    functions.push(match[0]);
+                }
+                
+                return functions;
+            }
+
+            flattenFunction(func) {
+                // Convert function to switch-based control flow
+                const stateVar = '_0x' + Math.random().toString(36).substr(2, 4);
+                const stateCount = Math.floor(Math.random() * 5) + 3;
+                
+                let flattened = func.replace(/\{/, `{var ${stateVar}=0;while(true){switch(${stateVar}){`);
+                
+                for (let i = 0; i < stateCount; i++) {
+                    flattened += `case ${i}:${stateVar}=${(i + 1) % stateCount};break;`;
+                }
+                
+                flattened += `default:return;}}}`;
+                
+                return flattened;
+            }
+
+            injectDeadCode(code) {
+                const deadCodeSnippets = [
+                    `var _0xdead${Math.random().toString(36).substr(2,4)}=function(){return'dead';};`,
+                    `if(false){console.log('never executed');}`,
+                    `var _0xtemp${Math.random().toString(36).substr(2,4)}=Math.random()>2?'impossible':'';`,
+                    `function _0xfake${Math.random().toString(36).substr(2,4)}(){var x=0;for(var i=0;i<0;i++){x+=i;}return x;}`,
+                    `try{if(typeof nonExistentVar==='undefined'){}}catch(e){}`,
+                ];
+                
+                const lines = code.split('\n');
+                const injectionCount = Math.floor(lines.length * this.config.deadCodeThreshold);
+                
+                for (let i = 0; i < injectionCount; i++) {
+                    const position = Math.floor(Math.random() * lines.length);
+                    const snippet = deadCodeSnippets[Math.floor(Math.random() * deadCodeSnippets.length)];
+                    lines.splice(position, 0, snippet);
+                }
+                
+                return lines.join('\n');
+            }
+
+            addDebugProtection(code) {
+                const interval = this.config.debugInterval || 4000;
+                const protection = `
+(function(){
+    var _0xdbg=function(){
+        var _0x1=function(){return true;};
+        var _0x2=function(){debugger;};
+        var _0x3=function(_0x4){
+            if((''+ _0x4/_0x4)['length']!==1||_0x4%20===0){
+                (function(){}).constructor('debugger')();
+            }else{
+                (function(){}).constructor('debugger')();
+            }
+            _0x3(++_0x4);
+        };
+        try{
+            if(_0x1()){
+                return _0x3;
+            }else{
+                _0x2();
+            }
+        }catch(_0xe){
+            setTimeout(_0xdbg,${interval});
+        }
+    };
+    _0xdbg();
+})();`;
+                
+                return protection + code;
+            }
+
+            addSelfDefending(code) {
+                const protection = `
+(function(){
+    var _0x=Function.prototype.toString;
+    Function.prototype.toString=function(){
+        if(this===_0x){return'function toString(){[native code]}';}
+        return _0x.apply(this,arguments);
+    };
+    var _1=Object.defineProperty;
+    Object.defineProperty=function(_2,_3,_4){
+        if(_3==='toString'){return _2;}
+        return _1.apply(this,arguments);
+    };
+})();`;
+                
+                return protection + code;
+            }
+
+            addDomainLock(code) {
+                const domains = this.config.domainLock.split(',').map(d => d.trim()).filter(d => d);
+                if (domains.length === 0) return code;
+                
+                const redirectUrl = this.config.redirectUrl || 'about:blank';
+                const strict = this.config.strictDomainLock;
+                
+                const domainCheck = `
+(function(){
+    var _0xd=['${domains.join("','")}'];
+    var _0xh=window.location.hostname;
+    var _0xv=false;
+    for(var _0xi=0;_0xi<_0xd.length;_0xi++){
+        if(${strict ? '_0xh===_0xd[_0xi]' : '_0xh.indexOf(_0xd[_0xi])!==-1'}){
+            _0xv=true;
+            break;
+        }
+    }
+    if(!_0xv){
+        window.location.href='${redirectUrl}';
+    }
+})();`;
+                
+                return domainCheck + code;
+            }
+
+            applyTransformations(code) {
+                // Numbers to expressions
+                if (this.config.numbersToExpressions) {
+                    code = code.replace(/\b(\d+)\b/g, (match, num) => {
+                        const n = parseInt(num);
+                        if (n < 10) {
+                            return `(${Math.floor(n/2)}+${Math.ceil(n/2)})`;
+                        }
+                        return match;
+                    });
+                }
+                
+                // Transform object keys
+                if (this.config.transformObjectKeys) {
+                    code = code.replace(/(\w+):/g, (match, key) => {
+                        if (!this.isReservedName(key)) {
+                            return `'${key}':`;
+                        }
+                        return match;
+                    });
+                }
+                
+                // Unicode escape
+                if (this.config.unicodeEscape) {
+                    code = code.replace(/[a-zA-Z]/g, (char) => {
+                        if (Math.random() > 0.7) {
+                            return '\\u' + char.charCodeAt(0).toString(16).padStart(4, '0');
+                        }
+                        return char;
+                    });
+                }
+                
+                return code;
+            }
+
+            compactCode(code) {
+                return code
+                    .replace(/\/\/.*$/gm, '')
+                    .replace(/\/\*[\s\S]*?\*\//g, '')
+                    .replace(/\s+/g, ' ')
+                    .replace(/\s*([{}();,:])\s*/g, '$1')
+                    .trim();
+            }
+
+            shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            rotateArray(array, count) {
+                const len = array.length;
+                count = count % len;
+                array.push(...array.splice(0, count));
+            }
+
+            calculateDifficulty() {
+                let score = 0;
+                
+                if (this.config.stringArray) score += 1;
+                if (this.config.stringEncoding === 'rc4') score += 2;
+                else if (this.config.stringEncoding === 'base64') score += 1;
+                if (this.config.controlFlowFlattening) score += 2;
+                if (this.config.deadCodeInjection) score += 1;
+                if (this.config.debugProtection) score += 1;
+                if (this.config.selfDefending) score += 1;
+                if (this.config.domainLock) score += 1;
+                
+                return Math.min(score, 10);
+            }
+        }
+
+        // Preset Configurations
+        const presets = {
+            low: {
+                compact: true,
+                identifierGenerator: 'hexadecimal',
+                identifierPrefix: '_0x',
+                renameGlobals: false,
+                renameProperties: false,
+                stringArray: true,
+                stringThreshold: 0.5,
+                stringEncoding: 'none',
+                rotateStringArray: false,
+                shuffleStringArray: false,
+                stringWrappers: 0,
+                splitStrings: false,
+                controlFlowFlattening: false,
+                flowThreshold: 0,
+                deadCodeInjection: false,
+                deadCodeThreshold: 0,
+                debugProtection: false,
+                debugInterval: 4000,
+                disableConsole: false,
+                selfDefending: false,
+                domainLock: '',
+                redirectUrl: '',
+                strictDomainLock: false,
+                numbersToExpressions: false,
+                transformObjectKeys: false,
+                unicodeEscape: false,
+                simplify: true
+            },
+            medium: {
+                compact: true,
+                identifierGenerator: 'hexadecimal',
+                identifierPrefix: '_0x',
+                renameGlobals: true,
+                renameProperties: false,
+                stringArray: true,
+                stringThreshold: 0.75,
+                stringEncoding: 'base64',
+                rotateStringArray: true,
+                shuffleStringArray: true,
+                stringWrappers: 2,
+                splitStrings: false,
+                controlFlowFlattening: true,
+                flowThreshold: 0.75,
+                deadCodeInjection: true,
+                deadCodeThreshold: 0.4,
+                debugProtection: false,
+                debugInterval: 4000,
+                disableConsole: false,
+                selfDefending: true,
+                domainLock: '',
+                redirectUrl: '',
+                strictDomainLock: false,
+                numbersToExpressions: false,
+                transformObjectKeys: true,
+                unicodeEscape: false,
+                simplify: false
+            },
+            high: {
+                compact: true,
+                identifierGenerator: 'mangled-shuffled',
+                identifierPrefix: '_0x',
+                renameGlobals: true,
+                renameProperties: true,
+                stringArray: true,
+                stringThreshold: 0.9,
+                stringEncoding: 'base64',
+                rotateStringArray: true,
+                shuffleStringArray: true,
+                stringWrappers: 3,
+                splitStrings: true,
+                controlFlowFlattening: true,
+                flowThreshold: 0.9,
+                deadCodeInjection: true,
+                deadCodeThreshold: 0.6,
+                debugProtection: true,
+                debugInterval: 4000,
+                disableConsole: true,
+                selfDefending: true,
+                domainLock: '',
+                redirectUrl: '',
+                strictDomainLock: false,
+                numbersToExpressions: true,
+                transformObjectKeys: true,
+                unicodeEscape: false,
+                simplify: false
+            },
+            maximum: {
+                compact: true,
+                identifierGenerator: 'mangled-shuffled',
+                identifierPrefix: '_0x',
+                renameGlobals: true,
+                renameProperties: true,
+                stringArray: true,
+                stringThreshold: 1.0,
+                stringEncoding: 'rc4',
+                rotateStringArray: true,
+                shuffleStringArray: true,
+                stringWrappers: 5,
+                splitStrings: true,
+                controlFlowFlattening: true,
+                flowThreshold: 1.0,
+                deadCodeInjection: true,
+                deadCodeThreshold: 1.0,
+                debugProtection: true,
+                debugInterval: 4000,
+                disableConsole: true,
+                selfDefending: true,
+                domainLock: '',
+                redirectUrl: '',
+                strictDomainLock: true,
+                numbersToExpressions: true,
+                transformObjectKeys: true,
+                unicodeEscape: true,
+                simplify: false
+            }
+        };
+
+        // UI Functions
+        function applyPreset(preset) {
+            currentPreset = preset;
+            const config = presets[preset];
+            
+            // Update all form fields
+            document.getElementById('identifierGenerator').value = config.identifierGenerator;
+            document.getElementById('identifierPrefix').value = config.identifierPrefix;
+            document.getElementById('renameGlobals').checked = config.renameGlobals;
+            document.getElementById('renameProperties').checked = config.renameProperties;
+            document.getElementById('stringEncoding').value = config.stringEncoding;
+            document.getElementById('stringThreshold').value = config.stringThreshold;
+            document.getElementById('stringThresholdValue').textContent = config.stringThreshold;
+            document.getElementById('stringArray').checked = config.stringArray;
+            document.getElementById('rotateStringArray').checked = config.rotateStringArray;
+            document.getElementById('shuffleStringArray').checked = config.shuffleStringArray;
+            document.getElementById('stringWrappers').value = config.stringWrappers;
+            document.getElementById('wrappersValue').textContent = config.stringWrappers;
+            document.getElementById('splitStrings').checked = config.splitStrings;
+            document.getElementById('flowThreshold').value = config.flowThreshold;
+            document.getElementById('flowThresholdValue').textContent = config.flowThreshold;
+            document.getElementById('controlFlowFlattening').checked = config.controlFlowFlattening;
+            document.getElementById('deadCodeInjection').checked = config.deadCodeInjection;
+            document.getElementById('deadCodeThreshold').value = config.deadCodeThreshold;
+            document.getElementById('deadCodeThresholdValue').textContent = config.deadCodeThreshold;
+            document.getElementById('selfDefending').checked = config.selfDefending;
+            document.getElementById('debugProtection').checked = config.debugProtection;
+            document.getElementById('debugInterval').value = config.debugInterval;
+            document.getElementById('debugIntervalValue').textContent = config.debugInterval;
+            document.getElementById('disableConsole').checked = config.disableConsole;
+            document.getElementById('domainLock').value = config.domainLock;
+            document.getElementById('redirectUrl').value = config.redirectUrl;
+            document.getElementById('strictDomainLock').checked = config.strictDomainLock;
+            document.getElementById('compact').checked = config.compact;
+            document.getElementById('numbersToExpressions').checked = config.numbersToExpressions;
+            document.getElementById('transformObjectKeys').checked = config.transformObjectKeys;
+            document.getElementById('unicodeEscape').checked = config.unicodeEscape;
+            document.getElementById('simplify').checked = config.simplify;
+            
+            // Update active button
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            showNotification(`${preset.charAt(0).toUpperCase() + preset.slice(1)} preset applied`, 'success');
+        }
+
+        function getConfig() {
+            return {
+                compact: document.getElementById('compact').checked,
+                identifierGenerator: document.getElementById('identifierGenerator').value,
+                identifierPrefix: document.getElementById('identifierPrefix').value,
+                renameGlobals: document.getElementById('renameGlobals').checked,
+                renameProperties: document.getElementById('renameProperties').checked,
+                stringArray: document.getElementById('stringArray').checked,
+                stringThreshold: parseFloat(document.getElementById('stringThreshold').value),
+                stringEncoding: document.getElementById('stringEncoding').value,
+                rotateStringArray: document.getElementById('rotateStringArray').checked,
+                shuffleStringArray: document.getElementById('shuffleStringArray').checked,
+                stringWrappers: parseInt(document.getElementById('stringWrappers').value),
+                splitStrings: document.getElementById('splitStrings').checked,
+                controlFlowFlattening: document.getElementById('controlFlowFlattening').checked,
+                flowThreshold: parseFloat(document.getElementById('flowThreshold').value),
+                deadCodeInjection: document.getElementById('deadCodeInjection').checked,
+                deadCodeThreshold: parseFloat(document.getElementById('deadCodeThreshold').value),
+                debugProtection: document.getElementById('debugProtection').checked,
+                debugInterval: parseInt(document.getElementById('debugInterval').value),
+                disableConsole: document.getElementById('disableConsole').checked,
+                selfDefending: document.getElementById('selfDefending').checked,
+                domainLock: document.getElementById('domainLock').value,
+                redirectUrl: document.getElementById('redirectUrl').value,
+                strictDomainLock: document.getElementById('strictDomainLock').checked,
+                numbersToExpressions: document.getElementById('numbersToExpressions').checked,
+                transformObjectKeys: document.getElementById('transformObjectKeys').checked,
+                unicodeEscape: document.getElementById('unicodeEscape').checked,
+                simplify: document.getElementById('simplify').checked
+            };
+        }
+
+        function obfuscateCode() {
+            const inputCode = document.getElementById('inputCode').value.trim();
+            
+            if (!inputCode) {
+                showNotification('Please enter some code to obfuscate', 'error');
+                return;
+            }
+            
+            // Show progress
+            document.getElementById('progressBar').style.display = 'block';
+            document.getElementById('progressFill').style.width = '30%';
+            
+            setTimeout(() => {
+                try {
+                    const config = getConfig();
+                    const engine = new ObfuscatorEngine(config);
+                    
+                    document.getElementById('progressFill').style.width = '60%';
+                    
+                    const obfuscated = engine.obfuscate(inputCode);
+                    
+                    document.getElementById('progressFill').style.width = '100%';
+                    document.getElementById('outputCode').value = obfuscated;
+                    
+                    // Update statistics
+                    updateStatistics(engine.stats, engine.calculateDifficulty());
+                    
+                    setTimeout(() => {
+                        document.getElementById('progressBar').style.display = 'none';
+                        document.getElementById('progressFill').style.width = '0%';
+                    }, 500);
+                    
+                    showNotification('Code obfuscated successfully!', 'success');
+                } catch (error) {
+                    document.getElementById('progressBar').style.display = 'none';
+                    showNotification('Obfuscation error: ' + error.message, 'error');
+                }
+            }, 100);
+        }
+
+        function updateStatistics(stats, difficulty) {
+            document.getElementById('statOriginalSize').textContent = 
+                (stats.originalSize / 1024).toFixed(2) + ' KB';
+            document.getElementById('statObfuscatedSize').textContent = 
+                (stats.obfuscatedSize / 1024).toFixed(2) + ' KB';
+            
+            const increase = ((stats.obfuscatedSize - stats.originalSize) / stats.originalSize * 100).toFixed(1);
+            document.getElementById('statIncrease').textContent = increase + '%';
+            document.getElementById('statProcessTime').textContent = 
+                stats.processTime.toFixed(0) + 'ms';
+            document.getElementById('statLayers').textContent = stats.layersApplied;
+            document.getElementById('statDifficulty').textContent = difficulty + '/10';
+        }
+
+        function validateCode() {
+            const inputCode = document.getElementById('inputCode').value.trim();
+            
+            if (!inputCode) {
+                showNotification('Please enter some code to validate', 'error');
+                return;
+            }
+            
+            try {
+                new Function(inputCode);
+                showNotification('Code syntax is valid!', 'success');
+            } catch (error) {
+                showNotification('Syntax error: ' + error.message, 'error');
+            }
+        }
+
+        function beautifyCode() {
+            const inputCode = document.getElementById('inputCode').value.trim();
+            
+            if (!inputCode) {
+                showNotification('Please enter some code to beautify', 'error');
+                return;
+            }
+            
+            try {
+                let beautified = inputCode
+                    .replace(/([{;}])/g, '$1\n')
+                    .replace(/\n\s*\n/g, '\n')
+                    .split('\n')
+                    .map(line => {
+                        const indent = (line.match(/\{/g) || []).length - (line.match(/\}/g) || []).length;
+                        return '  '.repeat(Math.max(0, indent)) + line.trim();
+                    })
+                    .join('\n');
+                
+                document.getElementById('inputCode').value = beautified;
+                showNotification('Code beautified successfully!', 'success');
+            } catch (error) {
+                showNotification('Beautification error: ' + error.message, 'error');
+            }
+        }
+
+        function copyOutput() {
+            const output = document.getElementById('outputCode').value;
+            
+            if (!output) {
+                showNotification('No code to copy', 'error');
+                return;
+            }
+            
+            navigator.clipboard.writeText(output).then(() => {
+                showNotification('Code copied to clipboard!', 'success');
+            }).catch(err => {
+                showNotification('Failed to copy: ' + err.message, 'error');
+            });
+        }
+
+        function downloadOutput() {
+            const output = document.getElementById('outputCode').value;
+            
+            if (!output) {
+                showNotification('No code to download', 'error');
+                return;
+            }
+            
+            const blob = new Blob([output], { type: 'application/javascript' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'obfuscated-' + Date.now() + '.js';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Code downloaded successfully!', 'success');
+        }
+
+        function clearInput() {
+            document.getElementById('inputCode').value = '';
+            document.getElementById('outputCode').value = '';
+            showNotification('Editor cleared', 'success');
+        }
+
+        function loadExample() {
+            const exampleCode = `// Example JavaScript Code
+function calculateSum(a, b) {
+    const result = a + b;
+    console.log("Sum is: " + result);
+    return result;
+}
+
+class User {
+    constructor(name, email) {
+        this.name = name;
+        this.email = email;
+        this.createdAt = new Date();
+    }
+    
+    getInfo() {
+        return {
+            name: this.name,
+            email: this.email,
+            age: this.calculateAge()
+        };
+    }
+    
+    calculateAge() {
+        const now = new Date();
+        const diff = now - this.createdAt;
+        return Math.floor(diff / (1000 * 60 * 60 * 24));
+    }
+}
+
+const API_KEY = "sk_test_123456789";
+const API_URL = "https://api.example.com/v1";
+
+async function fetchData(endpoint) {
+    try {
+        const response = await fetch(API_URL + endpoint, {
+            headers: {
+                'Authorization': 'Bearer ' + API_KEY,
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('API request failed');
+        }
+        
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
+}
+
+// Event handlers
+document.addEventListener('DOMContentLoaded', function() {
+    const user = new User('John Doe', 'john@example.com');
+    console.log(user.getInfo());
+    
+    fetchData('/users').then(data => {
+        if (data) {
+            console.log('Users loaded:', data);
+        }
+    });
+});
+
+// Utility functions
+const utils = {
+    formatDate: (date) => date.toISOString().split('T')[0],
+    validateEmail: (email) => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email),
+    generateId: () => Math.random().toString(36).substr(2, 9)
+};`;
+
+            document.getElementById('inputCode').value = exampleCode;
+            showNotification('Example code loaded', 'success');
+        }
+
+        function toggleSettings() {
+            settingsExpanded = !settingsExpanded;
+            const content = document.getElementById('settingsContent');
+            const toggle = document.getElementById('settingsToggle');
+            
+            if (settingsExpanded) {
+                content.style.display = 'grid';
+                toggle.textContent = '▼';
+            } else {
+                content.style.display = 'none';
+                toggle.textContent = '▶';
+            }
+        }
+
+        function updateRangeValue(rangeId, valueId) {
+            const value = document.getElementById(rangeId).value;
+            document.getElementById(valueId).textContent = value;
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.className = 'notification ' + type;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize with medium preset
+        window.addEventListener('DOMContentLoaded', () => {
+            applyPreset('medium');
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    obfuscateCode();
+                } else if (e.key === 's') {
+                    e.preventDefault();
+                    downloadOutput();
+                }
+            }
+        });
+    </script>
+</body>
+</html> class="hero">
+        <div class="shield-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L4 6V12C4 16.55 7.16 20.74 12 22C16.84 20.74 20 16.55 20 12V6L12 2Z" 
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      fill="url(#shield-gradient)"/>
+                <defs>
+                    <linearGradient id="shield-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+        <h1>JavaScript Obfuscator Pro</h1>
+        <p class="subtitle">Military-Grade Code Protection & Advanced Obfuscation Engine</p>
+    </div>
+
+    <div class="container">
+        <div class="preset-buttons">
+            <button class="preset-btn" onclick="applyPreset('low')">⚡ Low (Fast)</button>
+            <button class="preset-btn active" onclick="applyPreset('medium')">⚖️ Medium (Balanced)</button>
+            <button class="preset-btn" onclick="applyPreset('high')">🛡️ High (Recommended)</button>
+            <button class="preset-btn" onclick="applyPreset('maximum')">🔒 Maximum (Extreme)</button>
+        </div>
+
+        <div class="info-banner">
+            ℹ️ <strong>Security Notice:</strong> Obfuscation makes code difficult to read but does not provide absolute security. 
+            With sufficient time and expertise, obfuscated code can be reverse-engineered. Use in combination with other security measures 
+            (server-side validation, encryption, authentication) for comprehensive protection.
+        </div>
+
+        <div class="editor-container">
+            <div class="editor-wrapper">
+                <div class="editor-label">
+                    <span>📝 Input Code</span>
+                    <div class="editor-actions">
+                        <button class="icon-btn" onclick="clearInput()">Clear</button>
+                        <button class="icon-btn" onclick="loadExample()">Example</button>
+                    </div>
+                </div>
+                <textarea id="inputCode" placeholder="Paste your JavaScript code here..."
+                    aria-label="Input JavaScript code"></textarea>
+            </div>
+
+            <div class="editor-wrapper">
+                <div class="editor-label">
+                    <span>🔐 Obfuscated Code</span>
+                    <div class="editor-actions">
+                        <button class="icon-btn" onclick="copyOutput()">Copy</button>
+                        <button class="icon-btn" onclick="downloadOutput()">Download</button>
+                    </div>
+                </div>
+                <textarea id="outputCode" placeholder="Obfuscated code will appear here..." 
+                    readonly aria-label="Obfuscated JavaScript code"></textarea>
+            </div>
+        </div>
+
+        <div class="progress-bar" id="progressBar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="obfuscateCode()">
+                <span>🚀</span>
+                <span>Obfuscate Code</span>
+            </button>
+            <button class="btn btn-secondary" onclick="validateCode()">
+                <span>✓</span>
+                <span>Validate Syntax</span>
+            </button>
+            <button class="btn btn-secondary" onclick="beautifyCode()">
+                <span>✨</span>
+                <span>Beautify</span>
+            </button>
+        </div>
+
+        <div class="glass-panel">
+            <div class="settings-header" onclick="toggleSettings()">
+                <h2>⚙️ Advanced Settings</h2>
+                <span id="settingsToggle">▼</span>
+            </div>
+            <div class="settings-content" id="settingsContent">
+                <div class="settings-section">
+                    <h3>🔤 Identifier Renaming</h3>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>Generator Type</span>
+                            <span class="tooltip" title="Method for generating new variable names">ℹ️</span>
+                        </div>
+                        <select id="identifierGenerator">
+                            <option value="hexadecimal">Hexadecimal</option>
+                            <option value="mangled">Mangled</option>
+                            <option value="mangled-shuffled">Mangled Shuffled</option>
+                            <option value="dictionary">Dictionary</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>Identifier Prefix</span>
+                        </div>
+                        <input type="text" id="identifierPrefix" placeholder="_0x" value="_0x">
+                    </div>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="renameGlobals">
+                            <label for="renameGlobals">Rename Global Variables</label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="renameProperties">
+                            <label for="renameProperties">Rename Properties</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>🔐 String Encryption</h3>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>Encoding Type</span>
+                            <span class="tooltip" title="RC4 is more secure but slower">ℹ️</span>
+                        </div>
+                        <select id="stringEncoding">
+                            <option value="none">None</option>
+                            <option value="base64">Base64</option>
+                            <option value="rc4">RC4 (More Secure)</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>String Array Threshold: <span id="stringThresholdValue">0.75</span></span>
+                        </div>
+                        <input type="range" id="stringThreshold" min="0" max="1" step="0.05" value="0.75" 
+                            oninput="updateRangeValue('stringThreshold', 'stringThresholdValue')">
+                    </div>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="stringArray" checked>
+                            <label for="stringArray">Enable String Array</label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="rotateStringArray" checked>
+                            <label for="rotateStringArray">Rotate String Array</label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="shuffleStringArray" checked>
+                            <label for="shuffleStringArray">Shuffle String Array</label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>String Array Wrappers: <span id="wrappersValue">2</span></span>
+                        </div>
+                        <input type="range" id="stringWrappers" min="0" max="5" step="1" value="2" 
+                            oninput="updateRangeValue('stringWrappers', 'wrappersValue')">
+                    </div>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="splitStrings">
+                            <label for="splitStrings">Split Strings</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>🔀 Control Flow</h3>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>Flattening Threshold: <span id="flowThresholdValue">0.75</span></span>
+                            <span class="tooltip" title="Higher = more obfuscation, slower performance">ℹ️</span>
+                        </div>
+                        <input type="range" id="flowThreshold" min="0" max="1" step="0.05" value="0.75" 
+                            oninput="updateRangeValue('flowThreshold', 'flowThresholdValue')">
+                    </div>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="controlFlowFlattening" checked>
+                            <label for="controlFlowFlattening">Enable Control Flow Flattening</label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="deadCodeInjection" checked>
+                            <label for="deadCodeInjection">Inject Dead Code</label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>Dead Code Threshold: <span id="deadCodeThresholdValue">0.4</span></span>
+                        </div>
+                        <input type="range" id="deadCodeThreshold" min="0" max="1" step="0.05" value="0.4" 
+                            oninput="updateRangeValue('deadCodeThreshold', 'deadCodeThresholdValue')">
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>🛡️ Protection</h3>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="selfDefending" checked>
+                            <label for="selfDefending">Self-Defending Code</label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="debugProtection">
+                            <label for="debugProtection">Debug Protection</label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>Debug Interval (ms): <span id="debugIntervalValue">4000</span></span>
+                        </div>
+                        <input type="range" id="debugInterval" min="1000" max="10000" step="1000" value="4000" 
+                            oninput="updateRangeValue('debugInterval', 'debugIntervalValue')">
+                    </div>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="disableConsole">
+                            <label for="disableConsole">Disable Console Output</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>🌐 Domain Lock</h3>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>Allowed Domains</span>
+                            <span class="tooltip" title="Comma-separated list">ℹ️</span>
+                        </div>
+                        <input type="text" id="domainLock" placeholder="example.com, app.example.com">
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>Redirect URL</span>
+                        </div>
+                        <input type="text" id="redirectUrl" placeholder="https://example.com/unauthorized">
+                    </div>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="strictDomainLock">
+                            <label for="strictDomainLock">Strict Domain Checking</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>⚡ Transformations</h3>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="compact" checked>
+                            <label for="compact">Compact Code</label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="numbersToExpressions">
+                            <label for="numbersToExpressions">Numbers to Expressions</label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="transformObjectKeys">
+                            <label for="transformObjectKeys">Transform Object Keys</label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="unicodeEscape">
+                            <label for="unicodeEscape">Unicode Escape Sequences</label>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="simplify">
+                            <label for="simplify">Simplify Code</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-panel">
+            <h2>📊 Obfuscation Statistics</h2>
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-value" id="statOriginalSize">0 KB</div>
+                    <div class="stat-label">Original Size</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statObfuscatedSize">0 KB</div>
+                    <div class="stat-label">Obfuscated Size</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statIncrease">0%</div>
+                    <div class="stat-label">Size Increase</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statProcessTime">0ms</div>
+                    <div class="stat-label">Processing Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statLayers">0</div>
+                    <div class="stat-label">Protection Layers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statDifficulty">0/10</div>
+                    <div class="stat-label">Reverse Engineering Difficulty</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div
